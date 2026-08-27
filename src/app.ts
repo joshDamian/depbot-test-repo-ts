@@ -2,6 +2,8 @@ import express from 'express';
 import { authRouter } from './routes/auth';
 import { uploadRouter } from './routes/upload';
 import { sessionMiddleware } from './lib/cookies';
+import { renderMarkdown } from './lib/markdown';
+import { generateId } from './lib/ids';
 
 const app = express();
 
@@ -12,7 +14,13 @@ app.use('/auth', authRouter);
 app.use('/upload', uploadRouter);
 
 app.get('/health', (_req, res) => {
-  res.json({ status: 'ok' });
+  res.json({ status: 'ok', requestId: generateId() });
+});
+
+app.post('/render', (req, res) => {
+  const { markdown } = req.body;
+  const html = renderMarkdown(markdown);
+  res.json({ html });
 });
 
 const port = process.env.PORT || 3000;
