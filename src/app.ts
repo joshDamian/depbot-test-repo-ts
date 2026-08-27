@@ -1,6 +1,7 @@
 import express from 'express';
 import { authRouter } from './routes/auth';
 import { uploadRouter } from './routes/upload';
+import { docsRouter } from './routes/docs';
 import { sessionMiddleware } from './lib/cookies';
 import { renderMarkdown } from './lib/markdown';
 import { generateId } from './lib/ids';
@@ -12,6 +13,7 @@ app.use(sessionMiddleware);
 
 app.use('/auth', authRouter);
 app.use('/upload', uploadRouter);
+app.use('/docs', docsRouter);
 
 app.get('/health', (_req, res) => {
   res.json({ status: 'ok', requestId: generateId() });
