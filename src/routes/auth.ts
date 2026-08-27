@@ -25,9 +25,9 @@ authRouter.get('/verify', (req, res) => {
   }
 
   const token = header.replace('Bearer ', '');
-  // algorithms includes "none" — rejected in jsonwebtoken v9
+
   const decoded = jwt.verify(token, SECRET, {
-    algorithms: ['HS256', 'none'],
+    algorithms: ['HS256'],
   });
 
   res.json({ user: decoded });
