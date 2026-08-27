@@ -8,8 +8,8 @@ export function generateTimeId(): string {
   return uuidv1();
 }
 
-export function generateIdToBuffer(): number[] {
-  const buf = new Array(16);
-  uuidv4({}, buf, 0);
+export function generateIdToBuffer(): Uint8Array {
+  const buf = new Uint8Array(16);
+  uuidv4(undefined, buf, 0);
   return buf;
 }
