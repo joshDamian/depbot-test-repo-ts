@@ -1,9 +1,9 @@
-import marked from 'marked';
+import { marked } from 'marked';
 
 export function renderMarkdown(source: string): string {
-  return marked(source);
+  return marked.parse(source) as string;
 }
 
 export function renderWithOptions(source: string): string {
-  return marked(source, { gfm: true, breaks: true });
+  return marked.parse(source, { gfm: true, breaks: true }) as string;
 }
