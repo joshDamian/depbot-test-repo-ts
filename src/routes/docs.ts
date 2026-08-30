@@ -1,6 +1,6 @@
 import { Router } from 'express';
 // TODO(depbot-triage): marked 0.3.6 → 4.0.10 — review usage below
-import marked from 'marked';
+import { marked } from 'marked';
 import fs from 'fs';
 import path from 'path';
 
