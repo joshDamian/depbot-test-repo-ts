@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { x, c } from 'tar';
+import * as tar from 'tar';
 import path from 'path';
 import fs from 'fs';
 
@@ -13,7 +13,7 @@ uploadRouter.post('/extract', async (req, res) => {
 
   fs.mkdirSync(dest, { recursive: true });
 
-  const extractor = x({ cwd: dest });
+  const extractor = tar.x({ cwd: dest });
 
   fs.createReadStream(archivePath)
     .pipe(extractor)
