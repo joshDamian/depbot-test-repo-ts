@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import marked from 'marked';
+import { marked } from 'marked';
 import fs from 'fs';
 import path from 'path';
 
