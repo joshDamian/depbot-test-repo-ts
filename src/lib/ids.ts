@@ -11,5 +11,5 @@ export function generateTimeId(): string {
 export function generateIdToBuffer(): number[] {
   const buf = new Uint8Array(16);
   uuidv4(undefined, buf, 0);
-  return buf;
+  return Array.from(buf);
 }
