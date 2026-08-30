@@ -15,7 +15,7 @@ uploadRouter.post('/extract', async (req, res) => {
 
   // tar.Extract constructor removed in v6+ — use tar.x() instead
   // TODO(depbot-triage): tar 4.4.13 → 7.5.21 — review usage below
-  const extractor = new tar.Extract({ path: dest });
+  const extractor = tar.x({ cwd: dest });
 
   fs.createReadStream(archivePath)
     .pipe(extractor)
