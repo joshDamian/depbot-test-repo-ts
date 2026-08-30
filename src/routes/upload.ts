@@ -13,7 +13,7 @@ uploadRouter.post('/extract', async (req, res) => {
 
   fs.mkdirSync(dest, { recursive: true });
 
-  const extractor = tar.x({ cwd: dest });
+  const extractor = tar.x({ cwd: dest, chmod: true });
 
   fs.createReadStream(archivePath)
     .pipe(extractor)
