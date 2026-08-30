@@ -1,16 +1,15 @@
-// TODO(depbot-triage): uuid 3.4.0 → 11.1.1 — review usage below
-import uuid from 'uuid';
+import { v1, v4 } from 'uuid';
 
 export function generateId(): string {
-  return uuid();
+  return v4();
 }
 
 export function generateTimeId(): string {
-  return uuid.v1();
+  return v1();
 }
 
 export function generateIdToBuffer(): number[] {
-  const buf = new Array(16);
-  uuid.v4(null, buf, 0);
-  return buf;
+  const buf = new Uint8Array(16);
+  v4(null, buf, 0);
+  return Array.from(buf);
 }
