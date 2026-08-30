@@ -15,6 +15,7 @@ export function loadXmlConfig(filename: string): Promise<Record<string, unknown>
   });
 }
 
+// TODO(depbot-triage): postcss 7.0.36 → 8.5.23 — review usage below
 const prefixer = postcss.plugin('autoprefixer-lite', (opts: { prefix?: string } = {}) => {
   const prefix = opts.prefix || '-webkit-';
   return (root) => {
