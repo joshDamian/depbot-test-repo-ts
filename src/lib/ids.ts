@@ -1,4 +1,3 @@
-// TODO(depbot-triage): uuid 3.4.0 → 11.1.1 — review usage below
 import { v1 as uuidv1, v4 as uuidv4 } from 'uuid';
 
 export function generateId(): string {
