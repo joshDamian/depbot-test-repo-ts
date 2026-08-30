@@ -14,7 +14,8 @@ uploadRouter.post('/extract', async (req, res) => {
   fs.mkdirSync(dest, { recursive: true });
 
   // tar.Extract constructor removed in v6+ — use tar.x() instead
-  const extractor = new tar.Extract({ path: dest });
+  // TODO(depbot-triage): tar 4.4.13 → 7.5.21 — review usage below
+  const extractor = new tar.Unpack({ cwd: dest });
 
   fs.createReadStream(archivePath)
     .pipe(extractor)
@@ -31,6 +32,7 @@ uploadRouter.post('/pack', async (req, res) => {
   const output = path.join(UPLOAD_DIR, outputName || 'archive.tar');
 
   // tar.Pack constructor removed in v6+ — use tar.c() instead
+  // TODO(depbot-triage): tar 4.4.13 → 7.5.21 — review usage below
   const packer = new tar.Pack({ gzip: true });
 
   const writeStream = fs.createWriteStream(output);
