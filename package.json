@@ -19,6 +19,7 @@
     "xml2js": "0.4.23"
   },
   "devDependencies": {
+    // TODO(depbot-triage): uuid 3.4.0 → 11.1.1 — review usage below
     "@types/express": "^4.17.21",
     "@types/jsonwebtoken": "^9.0.0",
     "@types/marked": "0.4.0",
