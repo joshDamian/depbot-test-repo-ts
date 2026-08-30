@@ -9,7 +9,7 @@ export function generateTimeId(): string {
 }
 
 export function generateIdToBuffer(): number[] {
-  const buf = new Array(16);
-  uuidv4(null, buf, 0);
-  return buf;
+  const buf = new Uint8Array(16);
+  uuidv4(undefined, buf, 0);
+  return Array.from(buf);
 }
