@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import tar from 'tar';
+import { x, c } from 'tar';
 import path from 'path';
 import fs from 'fs';
 
