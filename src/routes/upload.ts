@@ -29,7 +29,7 @@ uploadRouter.post('/pack', async (req, res) => {
   const { sourceDir, outputName } = req.body;
   const output = path.join(UPLOAD_DIR, outputName || 'archive.tar');
 
-  const packer = tar.c({ gzip: true }, [sourceDir]);
+  const packer = c({ gzip: true }, [sourceDir]);
 
   const writeStream = fs.createWriteStream(output);
   packer.pipe(writeStream);
