@@ -1,6 +1,7 @@
 import uuid from 'uuid';
 
 export function generateId(): string {
+  // TODO(depbot-triage): uuid 3.4.0 → 11.1.1 — review usage below
   return uuid();
 }
 
