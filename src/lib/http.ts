@@ -19,7 +19,7 @@ export async function fetchWithCancel(url: string) {
     });
     clearTimeout(timeout);
     return response.data;
-  } catch (err) {
+  } catch (err: any) {
     clearTimeout(timeout);
     if (axios.isCancel(err)) {
       throw new Error(`Cancelled: ${err.message}`);

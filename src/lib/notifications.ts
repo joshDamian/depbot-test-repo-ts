@@ -12,6 +12,5 @@ export function formatNotification(n: Notification): string {
 }
 
 export function formatBatch(notifications: Notification[]): string {
-  return notifications.map(formatNotification).join('
-');
+  return notifications.map(formatNotification).join('\n');
 }

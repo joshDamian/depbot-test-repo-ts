@@ -17,8 +17,6 @@ docsRouter.get('/:page', (req, res) => {
 });
 
 docsRouter.get('/', (_req, res) => {
-  const index = marked('# API Documentation
-
-Select a page from the sidebar.');
+  const index = marked('# API Documentation\n\nSelect a page from the sidebar.');
   res.send(`<html><body>${index}</body></html>`);
 });

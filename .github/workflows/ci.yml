@@ -1,0 +1,95 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm install
+      - run: npm run build
+
+  test:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm install
+      - run: npm run build
+      - run: npm test
+
+  smoke:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm install
+      - run: npm run build
+      - name: Start server and run smoke tests
+        run: |
+          node dist/app.js &
+          SERVER_PID=$!
+          sleep 2
+
+          echo "--- Health check ---"
+          HEALTH=$(curl -sf http://localhost:3000/health)
+          echo "$HEALTH"
+          echo "$HEALTH" | node -e "
+            const d = JSON.parse(require('fs').readFileSync('/dev/stdin','utf8'));
+            if (d.status !== 'ok') { console.error('Health check failed'); process.exit(1); }
+            if (!d.requestId) { console.error('Missing requestId'); process.exit(1); }
+            console.log('Health check passed');
+          "
+
+          echo "--- Markdown render ---"
+          RENDER=$(curl -sf -X POST http://localhost:3000/render \
+            -H 'Content-Type: application/json' \
+            -d '{"markdown": "# Hello\n\nWorld"}')
+          echo "$RENDER"
+          echo "$RENDER" | node -e "
+            const d = JSON.parse(require('fs').readFileSync('/dev/stdin','utf8'));
+            if (!d.html || !d.html.includes('<h1')) { console.error('Render failed'); process.exit(1); }
+            console.log('Render check passed');
+          "
+
+          echo "--- Auth login ---"
+          LOGIN=$(curl -sf -X POST http://localhost:3000/auth/login \
+            -H 'Content-Type: application/json' \
+            -d '{"username": "admin", "password": "admin"}')
+          echo "$LOGIN"
+          TOKEN=$(echo "$LOGIN" | node -e "
+            const d = JSON.parse(require('fs').readFileSync('/dev/stdin','utf8'));
+            if (!d.token) { console.error('Login failed'); process.exit(1); }
+            process.stdout.write(d.token);
+          ")
+          echo "Login check passed"
+
+          echo "--- Auth verify ---"
+          VERIFY=$(curl -sf http://localhost:3000/auth/verify \
+            -H "Authorization: Bearer $TOKEN")
+          echo "$VERIFY"
+          echo "$VERIFY" | node -e "
+            const d = JSON.parse(require('fs').readFileSync('/dev/stdin','utf8'));
+            if (d.user?.sub !== 'admin') { console.error('Verify failed'); process.exit(1); }
+            console.log('Verify check passed');
+          "
+
+          kill $SERVER_PID
+          echo "All smoke tests passed"
