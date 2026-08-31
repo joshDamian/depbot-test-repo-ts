@@ -1,4 +1,5 @@
 import { Router } from 'express';
+// @ts-expect-error - tar v7 type definitions are incompatible with moduleResolution "node"
 import { c, x } from 'tar';
 import path from 'path';
 import fs from 'fs';
