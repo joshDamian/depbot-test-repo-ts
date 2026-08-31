@@ -15,17 +15,20 @@ export function loadXmlConfig(filename: string): Promise<Record<string, unknown>
   });
 }
 
-// TODO(depbot-triage): postcss 7.0.36 → 8.5.23 — review usage below
-const prefixer = postcss.plugin('autoprefixer-lite', (opts: { prefix?: string } = {}) => {
+const prefixer: PluginCreator<{ prefix?: string }> = (opts = {}) => {
   const prefix = opts.prefix || '-webkit-';
-  return (root) => {
-    root.walkDecls((decl) => {
-      if (decl.prop === 'transform' || decl.prop === 'transition') {
-        decl.parent?.insertBefore(decl, decl.clone({ prop: prefix + decl.prop }));
-      }
-    });
+  return {
+    postcssPlugin: 'autoprefixer-lite',
+    Once(root) {
+      root.walkDecls((decl) => {
+        if (decl.prop === 'transform' || decl.prop === 'transition') {
+          decl.parent?.insertBefore(decl, decl.clone({ prop: prefix + decl.prop }));
+        }
+      });
+    }
   };
-});
+};
+prefixer.postcss = true;
 
 export function processStyles(cssInput: string): string {
   const result = postcss([prefixer]).process(cssInput);
