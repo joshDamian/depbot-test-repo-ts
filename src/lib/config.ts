@@ -29,7 +29,7 @@ const prefixer = (opts: { prefix?: string } = {}) => {
     }
   };
 };
-prefixer.postcss = true;
+
 
 export function processStyles(cssInput: string): string {
   const result = postcss([prefixer]).process(cssInput);
