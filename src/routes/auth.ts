@@ -25,8 +25,7 @@ authRouter.get('/verify', (req, res) => {
   }
 
   const token = header.replace('Bearer ', '');
-  // algorithms includes "none" — rejected in jsonwebtoken v9
-  // TODO(depbot-triage): jsonwebtoken 8.5.1 → 9.0.0 — review usage below
+  // algorithms limited to HS256 for security
   const decoded = jwt.verify(token, SECRET, {
     algorithms: ['HS256'],
   });
