@@ -32,6 +32,6 @@ const prefixer = (opts: { prefix?: string } = {}) => {
 
 
 export function processStyles(cssInput: string): string {
-  const result = postcss([prefixer]).process(cssInput);
+  const result = postcss([prefixer()]).process(cssInput);
   return result.css;
 }
