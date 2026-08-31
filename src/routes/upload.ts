@@ -29,14 +29,10 @@ uploadRouter.post('/pack', async (req, res) => {
   const { sourceDir, outputName } = req.body;
   const output = path.join(UPLOAD_DIR, outputName || 'archive.tar');
 
-  // tar.Pack constructor removed in v6+ — use tar.c() instead
-  // TODO(depbot-triage): tar 4.4.13 → 7.5.21 — review usage below
-  const packer = new tar.Pack({ gzip: true });
+  const packer = tar.c({ gzip: true }, [sourceDir]);
 
   const writeStream = fs.createWriteStream(output);
   packer.pipe(writeStream);
-  packer.add(sourceDir);
-  packer.end();
 
   writeStream.on('finish', () => {
     res.json({ archive: output });
