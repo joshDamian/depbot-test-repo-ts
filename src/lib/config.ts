@@ -1,7 +1,7 @@
 import { parseString } from 'xml2js';
 import fs from 'fs';
 import path from 'path';
-import postcss from 'postcss';
+import postcss, { PluginCreator } from 'postcss';
 
 export function loadXmlConfig(filename: string): Promise<Record<string, unknown>> {
   const filePath = path.join(process.cwd(), 'config', filename);
