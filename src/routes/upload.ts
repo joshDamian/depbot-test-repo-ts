@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import * as tar from 'tar';
+import { c, x } from 'tar';
 import path from 'path';
 import fs from 'fs';
 
@@ -14,7 +14,7 @@ uploadRouter.post('/extract', async (req, res) => {
   fs.mkdirSync(dest, { recursive: true });
 
   // tar.Extract constructor removed in v6+ — use tar.x() instead
-  const extractor = tar.x({ cwd: dest });
+  const extractor = x({ cwd: dest });
 
   fs.createReadStream(archivePath)
     .pipe(extractor)
@@ -31,7 +31,7 @@ uploadRouter.post('/pack', async (req, res) => {
   const output = path.join(UPLOAD_DIR, outputName || 'archive.tar');
 
   // tar.Pack constructor removed in v6+ — use tar.c() instead
-  const packer = tar.c({ gzip: true }, [sourceDir]);
+  const packer = c({ gzip: true }, [sourceDir]);
 
   const writeStream = fs.createWriteStream(output);
   packer.pipe(writeStream);
